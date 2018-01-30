@@ -7,7 +7,7 @@
     "files.autoSaveDelay": 10000,
     "editor.fontSize": 15,
     "editor.tabSize": 2,
-    "editor.formatOnType": true,
+    "editor.formatOnSave": true,
     "editor.multiCursorModifier": "ctrlCmd",
     "workbench.editor.showTabs": true,
     "eslint.autoFixOnSave": true,
