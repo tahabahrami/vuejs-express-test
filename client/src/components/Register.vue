@@ -36,10 +36,11 @@ export default {
           email: this.email,
           password: this.password
         });
+        console.log(response.data);
+        this.error = "";
       } catch (error) {
         this.error = error.response.data.error;
       }
-      console.log(response.data);
     }
   }
 };
