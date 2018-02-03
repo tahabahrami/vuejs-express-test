@@ -18,26 +18,27 @@
       color="teal"
       type="email"
       label="email"
-      :rules="[rules.required,rules.ali]"
+      :rules="[rules.required]"
       v-model="email"
       ma-3
       ></v-text-field>
       <v-text-field
       prepend-icon="vpn_key"
-      hint="At least 8 characters"
       :append-icon="e4 ? 'visibility' : 'visibility_off'"
       :append-icon-cb="() => (e4 = !e4)"
       :type="e4 ? 'password' : 'text'"
-      min="8"
-      max="32"
       color="teal"
+      @focus="showProg"
+      @blur="showProg"
       label="Enter your password"
       :rules="[rules.required]"
       v-model="password"
+      loading
       >
+       <v-progress-linear v-show="custom" slot="progress" :value="progress" height="7" :color="color"></v-progress-linear>
       </v-text-field>
     <v-flex xs4 offset-xs4>
-    <v-btn class="cyan mt-4 text-xs-center" dark @click="register">Register</v-btn>
+    <v-btn class="cyan mt-4 text-xs-center" v-show="!isLogin" dark @click="register">Register</v-btn>
     </v-flex>
     <v-flex>
     <v-alert
@@ -62,20 +63,19 @@ export default {
     return {
       email: "",
       password: "",
-      custom: true,
+      custom: false,
       error: null,
       isError: false,
       isLogin: false,
       e4: true,
       rules: {
-        required: value => !!value || "Required.",
-        ali: value => value.length < 10 || "kame"
+        required: value => !!value || "Required."
       }
     };
   },
   computed: {
     progress() {
-      return Math.min(100, this.password.length * 10);
+      return Math.min(100, this.password.length * 13);
     },
     color() {
       return ["error", "warning", "success"][Math.floor(this.progress / 40)];
@@ -99,6 +99,9 @@ export default {
         this.isError = true;
         this.error = error.response.data.error;
       }
+    },
+    showProg() {
+      this.custom = !this.custom;
     }
   }
 };
