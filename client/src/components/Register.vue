@@ -2,9 +2,9 @@
 <v-layout justify-center row>
 <v-flex xs3 fluid mt-5>
   <v-toolbar class="cyan" dark>
-    <v-toolbar-title>Register</v-toolbar-title>
+    <v-toolbar-title class="text-xs-center">Register</v-toolbar-title>
     </v-toolbar>
-    <v-flex class="elevation-10" pa-5>
+    <v-flex class="elevation-10" pa-4>
       <v-alert
       class="elevation-3 mb-3"
       color="error"
@@ -36,13 +36,14 @@
       :rules="passRules"
       v-model="password"
       required
-      loading
+      :loading="custom"
       >
        <v-progress-linear v-show="custom" slot="progress" :value="progress" height="7" :color="color"></v-progress-linear>
       </v-text-field>
       </v-form>
-    <v-flex xs4 offset-xs4>
-    <v-btn class="cyan mt-4 text-xs-center" :disabled="!valid" v-show="!isLogin" @click="register">Register</v-btn>
+    <v-flex class="text-xs-center">
+    <v-btn class="mt-4" round large :disabled="!valid" color="primary" v-show="!isLogin" @click="register">
+      <v-icon>verified_user</v-icon>login</v-btn>
     </v-flex>
     <v-flex>
     <v-alert
