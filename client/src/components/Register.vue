@@ -2,9 +2,9 @@
 <v-layout justify-center row>
 <v-flex xs3 fluid mt-5>
   <v-toolbar class="cyan" dark>
-    <v-toolbar-title class="text-xs-center">Register</v-toolbar-title>
+    <v-toolbar-title>Register</v-toolbar-title>
     </v-toolbar>
-    <v-flex class="elevation-10" pa-4>
+    <v-flex class="elevation-10" pt-5 pl-5 pr-5 pb-4>
       <v-alert
       class="elevation-3 mb-3"
       color="error"
@@ -15,16 +15,17 @@
     >{{error}}</v-alert>
     <v-form v-model="valid" ref="form" lazy-validation>
       <v-text-field
+      class="mb-4"
       prepend-icon="email"
       color="teal"
       type="email"
       label="email"
       :rules="emailRules"
       v-model="email"
-      ma-3
       required
       ></v-text-field>
       <v-text-field
+      class="mb-4 mt-4"
       prepend-icon="vpn_key"
       :append-icon="e4 ? 'visibility' : 'visibility_off'"
       :append-icon-cb="() => (e4 = !e4)"
@@ -42,7 +43,7 @@
       </v-text-field>
       </v-form>
     <v-flex class="text-xs-center">
-    <v-btn class="mt-4" round large :disabled="!valid" color="primary" v-show="!isLogin" @click="register">
+    <v-btn round large :disabled="!valid" color="primary" v-show="!isLogin" @click="register">
       <v-icon>verified_user</v-icon>login</v-btn>
     </v-flex>
     <v-flex>
