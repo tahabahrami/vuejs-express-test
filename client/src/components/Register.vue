@@ -13,14 +13,16 @@
       v-model="isError"
       transition="scale-transition"
     >{{error}}</v-alert>
+    <v-form v-model="valid" ref="form" lazy-validation>
       <v-text-field
       prepend-icon="email"
       color="teal"
       type="email"
       label="email"
-      :rules="[rules.required]"
+      :rules="emailRules"
       v-model="email"
       ma-3
+      required
       ></v-text-field>
       <v-text-field
       prepend-icon="vpn_key"
@@ -31,14 +33,16 @@
       @focus="showProg"
       @blur="showProg"
       label="Enter your password"
-      :rules="[rules.required]"
+      :rules="passRules"
       v-model="password"
+      required
       loading
       >
        <v-progress-linear v-show="custom" slot="progress" :value="progress" height="7" :color="color"></v-progress-linear>
       </v-text-field>
+      </v-form>
     <v-flex xs4 offset-xs4>
-    <v-btn class="cyan mt-4 text-xs-center" v-show="!isLogin" dark @click="register">Register</v-btn>
+    <v-btn class="cyan mt-4 text-xs-center" :disabled="!valid" v-show="!isLogin" @click="register">Register</v-btn>
     </v-flex>
     <v-flex>
     <v-alert
@@ -68,9 +72,17 @@ export default {
       isError: false,
       isLogin: false,
       e4: true,
-      rules: {
-        required: value => !!value || "Required."
-      }
+      valid: true,
+      passRules: [
+        v => !!v || "password is required",
+        v => (v && v.length >= 8) || "password must be more than 8 characters"
+      ],
+      emailRules: [
+        v => !!v || "E-mail is required",
+        v =>
+          /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+          "E-mail must be valid"
+      ]
     };
   },
   computed: {
@@ -86,18 +98,20 @@ export default {
       return this.isLogin;
     },
     async register() {
-      try {
-        const response = await AuthenticationService.register({
-          email: this.email,
-          password: this.password
-        });
-        this.isError = false;
-        this.isLogin = true;
-        this.error = "you loged in successfully";
-        console.log(response.data);
-      } catch (error) {
-        this.isError = true;
-        this.error = error.response.data.error;
+      if (this.$refs.form.validate()) {
+        try {
+          const response = await AuthenticationService.register({
+            email: this.email,
+            password: this.password
+          });
+          this.isError = false;
+          this.isLogin = true;
+          this.error = "you loged in successfully";
+          console.log(response.data);
+        } catch (error) {
+          this.isError = true;
+          this.error = error.response.data.error;
+        }
       }
     },
     showProg() {
